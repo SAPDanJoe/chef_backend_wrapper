@@ -14,3 +14,4 @@ run_list 'chef_backend_wrapper::default'
 
 # Specify a custom source for a single cookbook:
 cookbook 'chef_backend_wrapper', path: '.'
+cookbook 'chef-ingredient', path: '../chef-ingredient'

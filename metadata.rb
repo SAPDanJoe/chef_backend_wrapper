@@ -1,20 +1,16 @@
 name 'chef_backend_wrapper'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
-license 'All Rights Reserved'
-description 'Installs/Configures chef_backend_wrapper'
-long_description 'Installs/Configures chef_backend_wrapper'
+maintainer 'Steve Brown'
+maintainer_email 'sbrown@chef.io'
+license 'Apache-2.0'
+description 'Installs/Configures a chef backend'
+long_description 'Installs/Configures a chef backend'
 version '0.1.0'
 chef_version '>= 13.0'
+depends 'chef-ingredient'
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/chef_backend_wrapper/issues'
+%w(redhat centos debian ubuntu suse).each do |os|
+  supports os
+end
 
-# The `source_url` points to the development repository for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/chef_backend_wrapper'
+issues_url 'https://github.com/devoptimist/chef_backend_wrapper/issues'
+source_url 'https://github.com/devoptimist/chef_backend_wrapper'
