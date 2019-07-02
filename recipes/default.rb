@@ -55,7 +55,7 @@ cookbook_file node['chef_backend_wrapper']['frontend_parser_script'] do
   only_if { node['chef_backend_wrapper']['frontend_fqdns'].length >= 1 }
 end
 
-execute '/opt/chef-backend/embedded/bin/ruby /bin/fe_parse.rb' do
+execute "/opt/chef-backend/embedded/bin/ruby #{node['chef_backend_wrapper']['frontend_parser_script']}" do
   cwd node['chef_backend_wrapper']['frontend_config_dir']
   only_if { ::File.file?(node['chef_backend_wrapper']['frontend_parser_script']) }
   not_if { ::File.file?(node['chef_backend_wrapper']['frontend_config_details']) }
