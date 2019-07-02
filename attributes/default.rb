@@ -15,3 +15,5 @@ default['chef_backend_wrapper']['frontend_parser_script'] = '/bin/fe_parse.rb'
 
 default['chef_backend_wrapper']['backend_secrets'] = ''
 default['chef_backend_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
+
+default['chef_backend_wrapper']['cloud_public_address'] = false

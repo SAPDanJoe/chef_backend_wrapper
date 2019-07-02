@@ -18,7 +18,7 @@ config += <<~EOF
 
 hostname = if node['chef_backend_wrapper']['fqdn'] != ''
              node['chef_backend_wrapper']['fqdn']
-           elsif node['cloud']
+           elsif node['cloud'] && node['chef_backend_wrapper']['cloud_public_address']
              node['cloud']['public_ipv4_addrs'].first
            else
              node['ipaddress']
