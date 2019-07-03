@@ -17,3 +17,7 @@ default['chef_backend_wrapper']['backend_secrets'] = ''
 default['chef_backend_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
 
 default['chef_backend_wrapper']['cloud_public_address'] = false
+
+default['chef_backend_wrapper']['sles_patch_file_name'] = '_save_current_run.rb'
+default['chef_backend_wrapper']['sles_patch_file_path'] =
+  "/opt/chef-backend/embedded/cookbooks/chef-backend/recipes/#{node['chef_backend_wrapper']['sles_patch_file_name']}"
