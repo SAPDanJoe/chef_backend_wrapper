@@ -34,7 +34,6 @@ if node['platform_family'] == 'suse'
 
   chef_ingredient 'chef-backend' do
     action :upgrade
-    publish_address hostname
     channel node['chef_backend_wrapper']['channel'].to_sym
     version node['chef_backend_wrapper']['version']
     accept_license node['chef_backend_wrapper']['accept_license'].to_s == 'true'
