@@ -10,14 +10,18 @@
 #
 module ChefBackendWrapper
   module BackendHelpers
-    def update_configs?(fe_details)
-      if ::File.file?(fe_details)
-        base = ::File.dirname(fe_details)
-        (Dir.glob("#{base}/*chef-server.rb")
-          .map { |i| i.gsub(%r{#{base}/}, '') } - JSON.parse(File.read(fe_details))
-          .keys.map { |i| "#{i}-chef-server.rb" }).length >= 1
+    def update_configs?(fe_details, fe_nodes)
+      if fe_nodes >= 1
+        if ::File.file?(fe_details)
+          base = ::File.dirname(fe_details)
+          (Dir.glob("#{base}/*chef-server.rb")
+            .map { |i| i.gsub(%r{#{base}/}, '') } - JSON.parse(File.read(fe_details))
+            .keys.map { |i| "#{i}-chef-server.rb" }).length >= 1
+        else
+          true
+        end
       else
-        true
+        false
       end
     end
   end

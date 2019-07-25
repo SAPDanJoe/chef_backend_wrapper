@@ -72,10 +72,12 @@ end
 
 extend ChefBackendWrapper::BackendHelpers
 update_config = update_configs?(
-  node['chef_backend_wrapper']['frontend_config_details']
+  node['chef_backend_wrapper']['frontend_config_details'],
+  node['chef_backend_wrapper']['frontend_fqdns']
 )
 
 execute "/opt/chef-backend/embedded/bin/ruby #{node['chef_backend_wrapper']['frontend_parser_script']}" do
   cwd node['chef_backend_wrapper']['frontend_config_dir']
   only_if { update_config }
+  only_if { ::File.file?(node['chef_backend_wrapper']['frontend_parser_script']) }
 end
