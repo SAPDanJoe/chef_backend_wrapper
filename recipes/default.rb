@@ -58,26 +58,22 @@ end
 
 directory node['chef_backend_wrapper']['frontend_config_dir']
 
-node['chef_backend_wrapper']['frontend_fqdns'].each do |fe|
-  execute "chef-backend-ctl gen-server-config #{fe} -f #{fe}-chef-server.rb" do
-    cwd node['chef_backend_wrapper']['frontend_config_dir']
-    not_if { ::File.file?("#{node['chef_backend_wrapper']['frontend_config_dir']}/#{fe}-chef-server.rb") }
-  end
-end
-
 cookbook_file node['chef_backend_wrapper']['frontend_parser_script'] do
   source 'fe_parse.rb'
   only_if { node['chef_backend_wrapper']['frontend_fqdns'].length >= 1 }
 end
 
-extend ChefBackendWrapper::BackendHelpers
-update_config = update_configs?(
-  node['chef_backend_wrapper']['frontend_config_details'],
-  node['chef_backend_wrapper']['frontend_fqdns']
-)
+node['chef_backend_wrapper']['frontend_fqdns'].each do |fe|
+  execute "chef-backend-ctl gen-server-config #{fe} -f #{fe}-chef-server.rb" do
+    cwd node['chef_backend_wrapper']['frontend_config_dir']
+    not_if { ::File.file?("#{node['chef_backend_wrapper']['frontend_config_dir']}/#{fe}-chef-server.rb") }
+    notifies :run, 'execute[update_fe_json]', :delayed
+  end
+end
 
-execute "/opt/chef-backend/embedded/bin/ruby #{node['chef_backend_wrapper']['frontend_parser_script']}" do
+execute 'update_fe_json' do
+  command "/opt/chef-backend/embedded/bin/ruby #{node['chef_backend_wrapper']['frontend_parser_script']}"
   cwd node['chef_backend_wrapper']['frontend_config_dir']
-  only_if { update_config }
+  action :nothing
   only_if { ::File.file?(node['chef_backend_wrapper']['frontend_parser_script']) }
 end
