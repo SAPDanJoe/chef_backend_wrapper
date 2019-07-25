@@ -11,7 +11,7 @@
 module ChefBackendWrapper
   module BackendHelpers
     def update_configs?(fe_details, fe_nodes)
-      if fe_nodes >= 1
+      if fe_nodes.length >= 1
         if ::File.file?(fe_details)
           base = ::File.dirname(fe_details)
           (Dir.glob("#{base}/*chef-server.rb")
