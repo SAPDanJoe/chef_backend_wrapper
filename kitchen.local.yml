@@ -1,0 +1,45 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: eu_west_1
+  region: eu-west-1
+  availability_zone: b
+  require_chef_omnibus: true
+  instance_type: t3.large
+  associate_public_ip: true
+  shared_credentials_profile: success-engineering
+  tags:
+    X-Contact: sbrown@chef.io
+    X-Application: test-kitchen
+    X-Dept: success
+    X-TTL: 4
+
+provisioner:
+  name: chef_zero
+  chef_license: accept-no-persist
+  product_name: chef
+  product_version: 15.14.0
+
+transport:
+  ssh_key: /home/steveb/.ssh/eu_west_1
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: sles-12
+    transport:
+      username: ec2-user
+    driver:
+      image_search:
+        owner-id: "013907871322"
+        name: "suse-sles-12-sp4-v20190623-hvm-ssd-x86_64"
+suites:
+  - name: default
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
+      chef_backend_wrapper:
+        backend_secrets: '{"postgresql":{"db_superuser_password":"dbpassword","replication_password":"reppassword"},"etcd":{"initial_cluster_token":"initialclustertoken"},"elasticsearch":{"cluster_name":"SACLUSTER"}}'
+        frontend_fqdns: ["3.8.148.155", "3.8.148.156", "3.8.148.157", "3.8.148.158", "3.8.148.159", "3.8.148.160"]

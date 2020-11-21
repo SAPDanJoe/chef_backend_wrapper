@@ -13,8 +13,8 @@ remote_file '/bin/jq' do
 end
 
 config = node['chef_backend_wrapper']['config']
-config += <<~EOF
-          EOF
+config += <<~CONFIG
+CONFIG
 
 hostname = if node['chef_backend_wrapper']['fqdn'] != ''
              node['chef_backend_wrapper']['fqdn']
@@ -30,7 +30,12 @@ secrets = if node['chef_backend_wrapper']['backend_secrets'] != ''
             'cookbook_file://chef_backend_wrapper::chef-backend-secrets.json'
           end
 
-if node['platform_family'] == 'suse'
+if platform_family?('suse')
+  if File.readlines('/etc/hosts').grep(/`hostname`/).empty?
+    open('/etc/hosts', 'a') do |f|
+      f << "127.0.0.1 #{`hostname`}"
+    end
+  end
 
   chef_ingredient 'chef-backend' do
     action :upgrade
