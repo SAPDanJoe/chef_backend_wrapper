@@ -31,11 +31,11 @@ secrets = if node['chef_backend_wrapper']['backend_secrets'] != ''
           end
 
 if platform_family?('suse')
-  if File.readlines('/etc/hosts').grep(/`hostname`/).empty?
-    open('/etc/hosts', 'a') do |f|
-      f << "127.0.0.1 #{`hostname`}"
-    end
-  end
+  # if File.readlines('/etc/hosts').grep(/`hostname`/).empty?
+  #   open('/etc/hosts', 'a') do |f|
+  #     f << "127.0.0.1 #{`hostname`}"
+  #   end
+  # end
 
   chef_ingredient 'chef-backend' do
     action :upgrade
